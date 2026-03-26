@@ -1,0 +1,286 @@
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BASE */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #3c3838;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* HEADER */
+.container {
+  width: 100%;
+  height: 100px;
+  padding: 0 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* corrigido */
+  background-color: #3c3838;
+}
+
+/* LOGO */
+.Logo img {
+  width: 180px;
+  height: auto;
+  /* corrigido proporção */
+}
+
+/* NAV */
+.Nav_list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 10px;
+}
+
+.Nav_list a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 15px;
+  transition: 0.3s;
+}
+
+.Nav_list a:hover {
+  color: #F7CD04;
+}
+
+/* BOTÃO CONTATO */
+.btn-outline {
+  border: 2px solid #ffcc00;
+  color: #F7CD04 !important;
+  border-radius: 50px;
+  padding: 8px 20px !important;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background-color: #ffcc00;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+
+/* MAIN */
+.Main {
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  display: flex;
+  align-items: center;
+  padding: 0 85px;
+  position: relative;
+}
+
+/* BACKGROUND */
+.backgroundpage {
+  position: absolute; /* Mude para absolute para ela subir com o scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  /* Defina a altura exata que você quer que a imagem ocupe no topo */
+  height: 110vh; /* 80% da altura da tela, por exemplo */
+  
+  z-index: -1;
+  overflow: hidden;
+
+  /* Aplica o efeito de "sumir" na borda inferior da imagem */
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.Background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* TEXTO */
+.Main h1 {
+  font-size: 54px;
+  line-height: 1.1;
+  margin-bottom: 15px;
+}
+
+.Main p {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+/* BOTÃO PRINCIPAL */
+.btn_chamada {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 25px;
+  text-decoration: none;
+
+  border-radius: 8px;
+  border: none;
+
+  background-color: transparent;
+  color: #fff;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.4s;
+}
+
+.btn_chamada:hover {
+  transform: scale(1.1);
+  background-color: #25D366;
+}
+
+/* SOBRE */
+.flex-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 60px;
+
+
+  position: relative;
+  overflow: hidden;
+}
+
+
+.flex-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Sua imagem e o gradiente aqui */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)), url("images/Logo2.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+
+  filter: blur(5px);
+  transform: scale(1.1);
+
+  z-index: -1;
+}
+
+
+.flex-container>* {
+  position: relative;
+  z-index: 1;
+}
+
+.Foto_base {
+  width: 50%;
+  border-radius: 10px;
+  margin-left: -50px;
+  height: auto;
+}
+
+.Conteudo {
+  max-width: 500px;
+  font-size: 20px;
+  text-align: justify;
+  line-height: 1.6;
+  margin-right: 50px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  font-weight: bold;
+}
+
+/* TITULOS */
+section {
+  scroll-margin-top: 100px;
+  /* Isso resolve o problema do menu cobrindo o H2 */
+}
+
+.Tittle,
+.Tittle_S,
+.Tittle_PT {
+  font-size: 55px;
+  font-weight: bold;
+  margin-left: 40px;
+}
+.Tittle_S,.Paragrafo_S{
+  text-align: center;
+}
+
+.Tittle {
+  margin-top: 280px;
+}
+
+.Tittle_S,
+.Tittle_PT {
+  margin-top: 100px;
+}
+
+/* PARAGRAFOS */
+.Paragrafo_S,
+.Paragrafo_PT {
+  margin-left: 40px;
+  font-size: 20px;
+}
+
+.card-service {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.container-service-design_grafico,
+.container-service-cobertura_eventos,
+.container-service-gerenciamento_redes,
+.container-service-consultoria_diagnostico,
+.container-service-sites_landing_pages {
+  background-color: rgb(240, 239, 239);
+  color: rgb(15, 12, 12);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 45px;
+  width: 25%;
+  margin-left: 50px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: justify;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.container-service-design_grafico:hover,
+.container-service-cobertura_eventos:hover,
+.container-service-gerenciamento_redes:hover,
+.container-service-consultoria_diagnostico:hover,
+.container-service-sites_landing_pages:hover {
+  background-color: #ffcc00;
+  color: #000;
+  cursor: default;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+  transform: scale(1.1);
+}
+.texto-servico h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
