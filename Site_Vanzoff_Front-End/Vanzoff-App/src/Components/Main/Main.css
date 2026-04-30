@@ -1,0 +1,98 @@
+/* MAIN */
+.Main {
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  display: flex;
+  align-items: center;
+  padding: 0 85px;
+  position: relative;
+}
+
+/* BACKGROUND */
+.backgroundpage {
+  position: absolute; /* Mude para absolute para ela subir com o scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  /* Defina a altura exata que você quer que a imagem ocupe no topo */
+  height: 110vh; /* 80% da altura da tela, por exemplo */
+  
+  z-index: -1;
+  overflow: hidden;
+
+  /* Aplica o efeito de "sumir" na borda inferior da imagem */
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.Background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* TEXTO */
+.Main h1 {
+  font-size: 54px;
+  line-height: 1.1;
+  margin-bottom: 15px;
+}
+
+.Main p {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+/* BOTÃO PRINCIPAL */
+.btn_chamada {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 25px;
+  text-decoration: none;
+
+  border-radius: 8px;
+  border: none;
+
+  background-color: transparent;
+  color: #fff;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.4s;
+}
+
+.btn_chamada:hover {
+  transform: scale(1.1);
+  background-color: #25D366;
+}
+
+/* No seu Main.css */
+
+@media (max-width: 768px) {
+  .Main {
+    padding-top: 75px !important; /* Compensa a Nav de 65px */
+    padding-left: 15px;
+    padding-right: 15px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .Main h1 {
+    font-size: 26px; /* Ajuste para não quebrar a tela */
+  }
+  .Main_content p {
+    font-size: 18px; /* Ajuste para não quebrar a tela */
+  }
+  .btn_chamada {
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #25D366;
+    color: #fff;
+  }
+
+}

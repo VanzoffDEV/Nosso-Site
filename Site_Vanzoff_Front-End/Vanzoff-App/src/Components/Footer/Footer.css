@@ -1,0 +1,124 @@
+.Main-Footer {
+    background-color: #2e2a2a; /* Tom mais escuro que o fundo */
+    padding: 70px 0 20px;
+    border-top: 1px solid #444;
+}
+
+.Footer-Container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* Coluna da logo maior */
+    gap: 50px;
+    padding: 0 40px;
+}
+
+.Footer-Col h3 {
+    color: #F7CD04;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.Footer-Col p {
+    color: #aaa;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.Footer-Col ul {
+    list-style: none;
+}
+
+.Footer-Col ul li {
+    margin-bottom: 12px;
+}
+
+.Footer-Col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.Footer-Col ul li a:hover {
+    color: #F7CD04;
+    padding-left: 5px;
+}
+
+.Footer-Logo {
+    width: 150px;
+}
+
+.Social-Icons {
+    display: flex;
+    gap: 15px;
+}
+
+.Social-Icons a {
+    color: #fff;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.Social-Icons a:hover {
+    color: #F7CD04;
+    transform: translateY(-3px);
+}
+
+.Footer-Bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Responsividade 
+@media (max-width: 768px) {
+    .Footer-Container { grid-template-columns: 1fr; text-align: center; }
+    .Social-Icons { justify-content: center; }
+}*/
+
+/* --- ADICIONE OU SUBSTITUA NO FINAL DO SEU FOOTER.CSS --- */
+@media (max-width: 768px) {
+    .Main-Footer {
+        padding: 50px 0 20px !important;
+    }
+
+    .Footer-Container { 
+        grid-template-columns: 1fr !important; /* Força uma coluna */
+        text-align: center; 
+        gap: 40px !important;
+        padding: 0 20px !important;
+    }
+
+    .Footer-Col {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centraliza tudo dentro da coluna */
+    }
+
+    .Footer-Col h3 {
+        margin-bottom: 15px !important;
+    }
+
+    .Footer-Col p {
+        font-size: 14px;
+        margin: 15px 0 !important;
+    }
+
+    .Footer-Col ul {
+        padding: 0;
+    }
+
+    .Social-Icons { 
+        justify-content: center; 
+        margin-top: 10px;
+    }
+
+    .Footer-Bottom {
+        margin-top: 40px !important;
+        padding: 20px 15px !important;
+        font-size: 12px !important;
+    }
+}

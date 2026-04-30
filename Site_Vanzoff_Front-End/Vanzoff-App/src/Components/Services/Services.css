@@ -1,0 +1,111 @@
+/* --- ESTILO Serviço BENTO GRID --- */
+.portfolio-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+  grid-auto-rows: 250px; /* Altura base de cada linha */
+  gap: 20px;
+  padding: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.Tittle_S{
+    font-size: 55px;
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.bento-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background-color: #444;
+}
+
+/* Tamanhos Diferentes */
+.bento-item.featured { grid-column: span 2; grid-row: span 2; } /* Ocupa 2x2 */
+.bento-item.vertical { grid-row: span 2; } /* Ocupa 2 linhas */
+.bento-item.horizontal { grid-column: span 2; } /* Ocupa 2 colunas */
+
+.bento-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Efeito de Overlay (Texto que aparece no Hover) */
+.overlay {
+  position: absolute;
+  bottom: -100%; /* Começa escondido embaixo */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  transition: 0.4s ease;
+}
+
+.bento-item:hover .overlay {
+  bottom: 0; /* Sobe no hover */
+}
+
+.bento-item:hover img {
+  transform: scale(1.1);
+}
+
+.overlay h3 { color: #F7CD04; font-size: 22px; margin-bottom: 5px; }
+.overlay p { color: #fff; font-size: 14px; }
+
+/* Responsividade para celular */
+@media (max-width: 768px) {
+  .portfolio-bento-grid {
+    grid-template-columns: 1fr; /* Tudo em uma coluna no celular */
+    grid-auto-rows: 300px;
+  }
+  .bento-item.featured, .bento-item.vertical, .bento-item.horizontal {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}
+
+/* --- ADICIONE AO FINAL DO SEU SERVICES.CSS --- */
+@media (max-width: 768px) {
+  .Tittle_S {
+    font-size: 32px !important;
+    text-align: center;
+    margin-top: 60px !important;
+  }
+
+  .Paragrafo_S {
+    padding: 0 20px;
+    text-align: center;
+    
+  }
+
+  .portfolio-bento-grid {
+    grid-template-columns: 1fr !important; /* Força uma coluna */
+    grid-auto-rows: 250px !important; /* Altura fixa para os cards no mobile */
+    padding: 20px !important;
+    gap: 15px !important;
+  }
+
+  /* Faz o texto do serviço aparecer direto no celular (já que não tem hover) */
+  .overlay {
+    bottom: 0 !important; 
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent) !important;
+    padding: 15px !important;
+  }
+
+  .overlay h3 {
+    font-size: 18px !important;
+  }
+
+  .overlay p {
+    font-size: 12px !important;
+    line-height: 1.3;
+  }
+}

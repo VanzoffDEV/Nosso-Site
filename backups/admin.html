@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Vanzoff</title>
+    <link rel="stylesheet" href="admin.css"> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<section class="Admin-Dashboard">
+    <div class="Admin-Sidebar">
+        <div class="Logo-Admin">
+            <img src="images/Vanzoff agencia.png" alt="Logo Vanzoff">
+        </div>
+        <nav>
+            <a href="#" class="active">📝 Novo Post (Blog)</a>
+            <a href="#">💼 Novo Case (Portfólio)</a>
+            <hr>
+            <a href="index.html" class="link-sair">⬅️ Voltar ao Site</a>
+        </nav>
+    </div>
+
+    <div class="Admin-Main">
+        <header class="Main-Header">
+            <h2>Painel Administrativo</h2>
+            <div class="Admin-User">
+                <span id="user-display">Abelardo Vanzoff</span>
+                <div class="user-avatar">AV</div>
+            </div>
+        </header>
+
+        <div class="Form-Container">
+            <div class="Form-Header">
+                <h3>Publicar no Blog</h3>
+                <p>Alimente a seção de notícias do seu site</p>
+            </div>
+            
+            <form id="blog-form">
+                <div class="input-group">
+                    <label>Título do Artigo</label>
+                    <input type="text" id="post-title" placeholder="Ex: Por que o seu Instagram não vende?" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Categoria</label>
+                    <select id="post-category">
+                        <option value="estratégia">Estratégia</option>
+                        <option value="design">Design</option>
+                        <option value="tecnologia">Tecnologia</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>URL da Imagem (Capa)</label>
+                    <input type="text" id="post-image" placeholder="images/blog/foto.jpg" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Resumo do Post</label>
+                    <textarea id="post-summary" rows="5" placeholder="Texto curto que aparece no card do blog..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-save">🚀 Publicar Agora</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="scripts.js"></script>
+</body>
+</html>

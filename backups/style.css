@@ -1,0 +1,704 @@
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BASE */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #3c3838;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* HEADER */
+.container {
+  width: 100%;
+  height: 100px;
+  padding: 0 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* corrigido */
+  background-color: #3c3838;
+}
+
+/* LOGO */
+.Logo img {
+  width: 180px;
+  height: auto;
+  /* corrigido proporção */
+}
+
+/* NAV */
+.Nav_list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 10px;
+}
+
+.Nav_list a {
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 15px;
+  transition: 0.3s;
+}
+
+.Nav_list a:hover {
+  color: #F7CD04;
+}
+
+/* BOTÃO CONTATO */
+.btn-outline {
+  border: 2px solid #ffcc00;
+  color: #F7CD04 !important;
+  border-radius: 50px;
+  padding: 8px 20px !important;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background-color: #ffcc00;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+
+/* MAIN */
+.Main {
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  display: flex;
+  align-items: center;
+  padding: 0 85px;
+  position: relative;
+}
+
+/* BACKGROUND */
+.backgroundpage {
+  position: absolute; /* Mude para absolute para ela subir com o scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  /* Defina a altura exata que você quer que a imagem ocupe no topo */
+  height: 110vh; /* 80% da altura da tela, por exemplo */
+  
+  z-index: -1;
+  overflow: hidden;
+
+  /* Aplica o efeito de "sumir" na borda inferior da imagem */
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.Background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* TEXTO */
+.Main h1 {
+  font-size: 54px;
+  line-height: 1.1;
+  margin-bottom: 15px;
+}
+
+.Main p {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+/* BOTÃO PRINCIPAL */
+.btn_chamada {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 25px;
+  text-decoration: none;
+
+  border-radius: 8px;
+  border: none;
+
+  background-color: transparent;
+  color: #fff;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.4s;
+}
+
+.btn_chamada:hover {
+  transform: scale(1.1);
+  background-color: #25D366;
+}
+
+/* SOBRE */
+.flex-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 60px;
+
+
+  position: relative;
+  overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+
+.flex-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Sua imagem e o gradiente aqui */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)), url("images/Logo2.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+
+  filter: blur(5px);
+  transform: scale(1.1);
+
+  z-index: -1;
+}
+
+
+.flex-container>* {
+  position: relative;
+  z-index: 1;
+}
+
+.Foto_base {
+  width: 50%;
+  border-radius: 10px;
+  margin-left: -50px;
+  height: auto;
+}
+
+.Conteudo {
+  max-width: 500px;
+  font-size: 20px;
+  text-align: justify;
+  line-height: 1.6;
+  margin-right: 50px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  font-weight: bold;
+  
+}
+.Conteudo_sobre h2{
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+
+/* TITULOS */
+section {
+  scroll-margin-top: 100px;
+  /* Isso resolve o problema do menu cobrindo o H2 */
+}
+
+.Tittle,
+.Tittle_S,
+.Tittle_PT {
+  font-size: 55px;
+  font-weight: bold;
+  margin-left: 40px;
+}
+.Tittle_S,.Paragrafo_S{
+  text-align: center;
+}
+
+.Tittle {
+  margin-top: 280px;
+}
+
+.Tittle_S,
+.Tittle_PT {
+  margin-top: 100px;
+}
+
+/* PARAGRAFOS */
+.Paragrafo_S,
+.Paragrafo_PT {
+  margin-left: 40px;
+  font-size: 20px;
+}
+
+
+/* --- ESTILO Serviço BENTO GRID --- */
+.portfolio-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+  grid-auto-rows: 250px; /* Altura base de cada linha */
+  gap: 20px;
+  padding: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.bento-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background-color: #444;
+}
+
+/* Tamanhos Diferentes */
+.bento-item.featured { grid-column: span 2; grid-row: span 2; } /* Ocupa 2x2 */
+.bento-item.vertical { grid-row: span 2; } /* Ocupa 2 linhas */
+.bento-item.horizontal { grid-column: span 2; } /* Ocupa 2 colunas */
+
+.bento-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Efeito de Overlay (Texto que aparece no Hover) */
+.overlay {
+  position: absolute;
+  bottom: -100%; /* Começa escondido embaixo */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  transition: 0.4s ease;
+}
+
+.bento-item:hover .overlay {
+  bottom: 0; /* Sobe no hover */
+}
+
+.bento-item:hover img {
+  transform: scale(1.1);
+}
+
+.overlay h3 { color: #F7CD04; font-size: 22px; margin-bottom: 5px; }
+.overlay p { color: #fff; font-size: 14px; }
+
+/* Responsividade para celular */
+@media (max-width: 768px) {
+  .portfolio-bento-grid {
+    grid-template-columns: 1fr; /* Tudo em uma coluna no celular */
+    grid-auto-rows: 300px;
+  }
+  .bento-item.featured, .bento-item.vertical, .bento-item.horizontal {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}
+
+
+/* --- Portifolio de CARROSSEL DE LOGOS --- */
+
+.logos-slider {
+    overflow: hidden;
+    width: 100%;
+    margin-top: 40px;
+    background: #2e2a2a;
+    padding: 30px 0;
+}
+
+.logos-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 25s linear infinite;
+}
+
+.logos-track img {
+    width: 150px;
+    margin: 0 40px;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.logos-track img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* ANIMAÇÃO */
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .logos-track img {
+        width: 100px;
+        margin: 0 20px;
+    }
+}
+
+.Conteudo_Portfolio {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 20px;
+}
+.Conteudo_Portfolio .Tittle_P {
+   font-size: 55px;
+   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.Conteudo_Portfolio .Paragrafo_P {
+    font-size: 20px;
+    color: #ccc;
+}
+
+
+
+/* --- SEÇÃO BLOG --- */
+.blog-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.Conteudo_Blog .Tittle_PT{
+    text-align: center;
+     -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+     mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.Conteudo_Blog .Paragrafo_PT {
+    text-align: center;
+    font-size: 18px;
+    color: #ccc;
+}
+
+
+.blog-card {
+    display: flex;
+    background-color: #2e2a2a; /* Um tom levemente diferente do fundo */
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    border: 1px solid #444;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    border-color: #F7CD04;
+}
+
+.blog-image {
+    width: 35%;
+    position: relative;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #F7CD04;
+    color: #000;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.blog-info {
+    width: 65%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.blog-info h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #F7CD04;
+}
+
+.blog-info p {
+    font-size: 16px;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.read-more {
+    text-decoration: none;
+    color: #F7CD04;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.read-more:hover {
+    gap: 15px; /* Efeito de seta movendo */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .blog-card { flex-direction: column; }
+    .blog-image, .blog-info { width: 100%; }
+    .blog-image { height: 200px; }
+}
+
+
+/* --- SEÇÃO CONTATO --- */
+.Contact-Section {
+    padding: 100px 50px;
+    background-color: #3c3838;
+}
+
+.Contact-Container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 80px;
+    align-items: center;
+}
+
+.Contact-Info {
+    flex: 1;
+}
+
+.Tittle_Contact {
+    font-size: 48px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.Tittle_Contact span {
+    color: #F7CD04; /* Amarelo Vanzoff */
+}
+
+.Contact-Info p {
+    font-size: 18px;
+    color: #ccc;
+    margin-bottom: 40px;
+}
+
+.Contact-Items {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.item i {
+    font-size: 24px;
+    color: #F7CD04;
+    width: 40px;
+}
+
+.item p {
+    margin: 0;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.item a, .item span {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* FORMULÁRIO */
+.Contact-Form-Box {
+    flex: 1;
+    background: #2e2a2a;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.Contact-Form input, 
+.Contact-Form select, 
+.Contact-Form textarea {
+    width: 100%;
+    padding: 15px;
+    background: #3c3838;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+}
+
+.Contact-Form input:focus, 
+.Contact-Form textarea:focus {
+    border-color: #F7CD04;
+}
+
+.Contact-Form textarea {
+    height: 120px;
+    resize: none;
+}
+
+.btn-send {
+    width: 100%;
+    padding: 15px;
+    background-color: #F7CD04;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-send:hover {
+    background-color: #ffdb33;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(247, 205, 4, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .Contact-Container { flex-direction: column; gap: 50px; }
+    .Contact-Section { padding: 60px 20px; }
+}
+
+
+
+/* --- FOOTER CSS --- */
+.Main-Footer {
+    background-color: #2e2a2a; /* Tom mais escuro que o fundo */
+    padding: 70px 0 20px;
+    border-top: 1px solid #444;
+}
+
+.Footer-Container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* Coluna da logo maior */
+    gap: 50px;
+    padding: 0 40px;
+}
+
+.Footer-Col h3 {
+    color: #F7CD04;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.Footer-Col p {
+    color: #aaa;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.Footer-Col ul {
+    list-style: none;
+}
+
+.Footer-Col ul li {
+    margin-bottom: 12px;
+}
+
+.Footer-Col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.Footer-Col ul li a:hover {
+    color: #F7CD04;
+    padding-left: 5px;
+}
+
+.Footer-Logo {
+    width: 150px;
+}
+
+.Social-Icons {
+    display: flex;
+    gap: 15px;
+}
+
+.Social-Icons a {
+    color: #fff;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.Social-Icons a:hover {
+    color: #F7CD04;
+    transform: translateY(-3px);
+}
+
+.Footer-Bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .Footer-Container { grid-template-columns: 1fr; text-align: center; }
+    .Social-Icons { justify-content: center; }
+}
