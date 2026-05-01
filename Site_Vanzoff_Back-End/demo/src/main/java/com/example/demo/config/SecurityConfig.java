@@ -52,19 +52,26 @@ public class SecurityConfig {
         
         return http.build();
     }
+@Bean
+public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    
+    // LIBERANDO O DOMÍNIO OFICIAL E O LOCALHOST
+    configuration.setAllowedOrigins(Arrays.asList(
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "https://www.agenciavanzoff.com.br", // Domínio da Ludmila
+        "https://agenciavanzoff.com.br"      // Versão sem www
+    )); 
 
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://127.0.0.1:5173")); 
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); 
-        
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+    configuration.setAllowCredentials(true); 
+    
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
 
     @Bean
     public PasswordEncoder passwordEncoder() {
