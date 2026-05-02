@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // Ele vai ler do .env. No PC será localhost, no Render será o link da API
-  //baseURL: import.meta.env.VITE_API_URL, 
+  // Ele tenta pegar a URL da Vercel; se não achar, usa o localhost (para quando você estiver editando)
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
 });
 
 export default api;
