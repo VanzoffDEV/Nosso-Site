@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+ //import axios from 'axios';
 import './Contato.css';
+import '../../api'; // Certifique-se de que o caminho para o api.ts está correto
+import api from '../../api';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ export const Contact = () => {
 
     try {
       // Rota pública definida no seu SecurityConfig
-      await axios.post('http://localhost:8080/api/leads', payload);
+      await api.post('/api/leads', payload);
       alert(`🚀 Obrigado, ${formData.name}! Recebemos seu projeto e responderemos em breve.`);
       setFormData({ name: '', email: '', phone: '', service: '', message: '' });
     } catch (error) {
