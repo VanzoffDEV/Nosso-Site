@@ -57,15 +57,13 @@ public class SecurityConfig {
 public UrlBasedCorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     
-    // LIBERANDO O DOMÍNIO OFICIAL E O LOCALHOST
-    configuration.setAllowedOrigins(Arrays.asList(
-       "http://localhost:5173", 
-       "https://agenciavanzoff.vercel.app",
-       "agenciavanzoff.vercel.app",
-        "http://127.0.0.1:5173",
-        "https://www.agenciavanzoff.com.br", // Domínio da Ludmila
-        "https://agenciavanzoff.com.br"      // Versão sem www
-    )); 
+   configuration.setAllowedOrigins(Arrays.asList(
+    "http://localhost:5173", 
+    "https://agenciavanzoff.vercel.app",
+    "https://agenciavanzoff-v2.vercel.app", // O novo nome que deste
+    "https://agenciavanzoff-v2-abelardos-projects-795a2872.vercel.app", // O link do print
+    "https://www.agenciavanzoff.com.br"
+));
 
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
