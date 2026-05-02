@@ -1,41 +1,41 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+//import axios from 'axios';
+import { useNavigate, Link } from "react-router-dom";
+import api from "../api";
 
 export const LoginAdmin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.get('http://localhost:8080/api/posts', {
+      // USANDO A API CONFIGURADA E A URL DO RENDER
+      const response = await api.get("/api/posts", {
         auth: {
           username: email,
-          password: password 
-        }
+          password: password,
+        },
       });
 
       if (response.status === 200) {
         alert("✅ Acesso autorizado! Bem-vindo Abelardo e Ludmila.");
-        
-        // MUDANÇA AQUI: Usamos localStorage para que a nova aba consiga ler os dados
-        localStorage.setItem('isAuth', 'true');
-        
-        const nomeUsuario = email.split('@')[0];
-        localStorage.setItem('userName', nomeUsuario.charAt(0).toUpperCase() + nomeUsuario.slice(1));
 
-        // 2. Abre o Admin em uma NOVA ABA
-        window.open('/admin', '_blank');
-
-        // 3. Redireciona a aba atual (onde estava o login) de volta para a Home
-        navigate('/');
+        // Mantém o resto do seu código de localStorage e redirecionamento...
+        localStorage.setItem("isAuth", "true");
+        const nomeUsuario = email.split("@")[0];
+        localStorage.setItem(
+          "userName",
+          nomeUsuario.charAt(0).toUpperCase() + nomeUsuario.slice(1),
+        );
+        window.open("/admin", "_blank");
+        navigate("/");
       }
     } catch (error) {
       console.error("Erro de login:", error);
-      alert("❌ E-mail ou senha incorretos! Verifique a senha no Java.");
+      alert("❌ E-mail ou senha incorretos! Verifique as variáveis no Render.");
     }
   };
 
@@ -58,22 +58,42 @@ export const LoginAdmin = () => {
        .login-card { padding: 40px; }
          }
       `}</style>
-      
+
       <div className="login-card">
-        <img src="/images/Vanzoff agencia.png" alt="Vanzoff" style={{ width: '120px', marginBottom: '20px' }} />
+        <img
+          src="/images/Vanzoff agencia.png"
+          alt="Vanzoff"
+          style={{ width: "120px", marginBottom: "20px" }}
+        />
         <h2>Painel Restrito</h2>
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <label>E-mail</label>
-            <input type="email" required placeholder="admin@vanzoff.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              required
+              placeholder="admin@vanzoff.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="input-group">
             <label>Senha</label>
-            <input type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
-          <button type="submit" className="btn-login">Entrar no Painel</button>
+          <button type="submit" className="btn-login">
+            Entrar no Painel
+          </button>
         </form>
-        <Link to="/" className="btn-back-home">← Voltar para a Home</Link>
+        <Link to="/" className="btn-back-home">
+          ← Voltar para a Home
+        </Link>
       </div>
     </div>
   );
