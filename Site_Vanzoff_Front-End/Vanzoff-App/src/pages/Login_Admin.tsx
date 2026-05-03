@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-//import axios from 'axios';
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
 
@@ -12,7 +11,7 @@ export const LoginAdmin = () => {
     e.preventDefault();
 
     try {
-      // USANDO A API CONFIGURADA E A URL DO RENDER
+      // Fazemos a chamada para o seu backend no Render
       const response = await api.get("/api/posts", {
         auth: {
           username: email,
@@ -23,15 +22,17 @@ export const LoginAdmin = () => {
       if (response.status === 200) {
         alert("✅ Acesso autorizado! Bem-vindo Abelardo e Ludmila.");
 
-        // Mantém o resto do seu código de localStorage e redirecionamento...
+        // 1. Salvamos a autenticação ANTES de mudar de página
         localStorage.setItem("isAuth", "true");
+        
         const nomeUsuario = email.split("@")[0];
         localStorage.setItem(
           "userName",
-          nomeUsuario.charAt(0).toUpperCase() + nomeUsuario.slice(1),
+          nomeUsuario.charAt(0).toUpperCase() + nomeUsuario.slice(1)
         );
-        window.open("/admin", "_blank");
-        navigate("/");
+
+        // 2. Redirecionamos na MESMA aba para evitar bloqueio de pop-up
+        navigate("/admin");
       }
     } catch (error) {
       console.error("Erro de login:", error);
@@ -52,48 +53,23 @@ export const LoginAdmin = () => {
         .btn-login:hover { background: #ffdb33; transform: scale(1.02); }
         .btn-back-home { display: inline-block; margin-top: 25px; color: #888; text-decoration: none; font-size: 14px; transition: 0.3s; }
         .btn-back-home:hover { color: #F7CD04; }
-
-        /* --- RESPONSIVIDADE --- */
-        @media (min-width: 768px) {
-       .login-card { padding: 40px; }
-         }
       `}</style>
 
       <div className="login-card">
-        <img
-          src="/images/Vanzoff agencia.png"
-          alt="Vanzoff"
-          style={{ width: "120px", marginBottom: "20px" }}
-        />
+        <img src="/images/Vanzoff agencia.png" alt="Vanzoff" style={{ width: "120px", marginBottom: "20px" }} />
         <h2>Painel Restrito</h2>
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <label>E-mail</label>
-            <input
-              type="email"
-              required
-              placeholder="admin@vanzoff.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <input type="email" required placeholder="admin@vanzoff.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="input-group">
             <label>Senha</label>
-            <input
-              type="password"
-              required
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <input type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <button type="submit" className="btn-login">
-            Entrar no Painel
-          </button>
+          <button type="submit" className="btn-login">Entrar no Painel</button>
         </form>
-        <Link to="/" className="btn-back-home">
-          ← Voltar para a Home
-        </Link>
+        <Link to="/" className="btn-back-home">← Voltar para a Home</Link>
       </div>
     </div>
   );

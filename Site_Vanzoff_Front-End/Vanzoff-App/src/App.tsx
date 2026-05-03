@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Importe suas Páginas
+// Importe suas Páginas e Componentes
 import { Navbar } from './Components/Navbar/Navbar';
 import { MainHero } from './Components/Main/Main';
 import { About } from './Components/About/About';
@@ -13,22 +13,28 @@ import { Footer } from './Components/Footer/Footer';
 import { WorkWithUsModal } from './Components/Modal/WorkWithUs';
 import { PrivacyModal } from './Components/Modal/PrivacyModal';
 
-// Importe os novos componentes
+// Importe os componentes de Admin
 import { LoginAdmin } from './pages/Login_Admin'; 
 import { AdminPage } from './pages/Admin_Page';
 
-function App() {
-  const [activeModal, setActiveModal] = useState<null | 'work' | 'privacy'>('privacy');
-
-  // --- TRAVA DE SEGURANÇA (ProtectedRoute) ---
-  // Esta função verifica se o 'isAuth' existe no localStorage
- // --- TRAVA DE SEGURANÇA (ProtectedRoute) ---
+// --- TRAVA DE SEGURANÇA (ProtectedRoute) ---
+// Esta função impede que pessoas não logadas acessem a rota /admin
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuth = localStorage.getItem('isAuth') === 'true';
-  return isAuth ? <>{children}</> : <Navigate to="/login" />;
+  
+  if (!isAuth) {
+    // Se não houver autorização, redireciona para o login
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
 };
 
-  // Componente da Home
+function App() {
+  // Estado para controlar os modais (começa como null para não abrir nada sozinho)
+  const [activeModal, setActiveModal] = useState<null | 'work' | 'privacy'>(null);
+
+  // Componente que agrupa as seções da Página Principal (Landing Page)
   const HomePage = () => (
     <>
       <Navbar onOpenModal={() => setActiveModal('work')} />
@@ -44,21 +50,29 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         onOpenModal={() => setActiveModal('work')} 
         onOpenPrivacy={() => setActiveModal('privacy')} 
       />
-      <WorkWithUsModal isOpen={activeModal === 'work'} onClose={() => setActiveModal(null)} />
-      <PrivacyModal isOpen={activeModal === 'privacy'} onClose={() => setActiveModal(null)} />
+      
+      {/* Modais Gerenciados pelo Estado */}
+      <WorkWithUsModal 
+        isOpen={activeModal === 'work'} 
+        onClose={() => setActiveModal(null)} 
+      />
+      <PrivacyModal 
+        isOpen={activeModal === 'privacy'} 
+        onClose={() => setActiveModal(null)} 
+      />
     </>
   );
 
   return (
     <Router>
       <Routes>
-        {/* Rota da Página Principal */}
+        {/* 1. Rota da Página Principal */}
         <Route path="/" element={<HomePage />} />
 
-        {/* Rota do Login */}
+        {/* 2. Rota do Login Administrativo */}
         <Route path="/login" element={<LoginAdmin />} />
 
-        {/* Rota do Painel Admin PROTEGIDA */}
+        {/* 3. Rota do Painel Admin (PROTEGIDA) */}
         <Route 
           path="/admin" 
           element={
@@ -68,8 +82,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
           } 
         />
 
-        {/* Rota de "Página não encontrada" - Redireciona para Home */}
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* 4. Rota "Curinga" - Se o usuário digitar qualquer URL errada, volta para Home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
