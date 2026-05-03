@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../api'; // IMPORTANTE: Usando sua config centralizada
 
 export const AdminPage = () => {
   const [activeTab, setActiveTab] = useState<'blog' | 'portfolio' | 'leads'>('blog');
   const [history, setHistory] = useState<any[]>([]);
   const [leads, setLeads] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false); // Novo estado de carregamento
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
@@ -14,8 +15,8 @@ export const AdminPage = () => {
   const [summary, setSummary] = useState('');
   const [client, setClient] = useState('');
 
-  // Centralizamos a config de autenticação
-  const config = { auth: { username: 'admin@vanzoff.com', password: '#Mar250824' } };
+  // Centralizamos a config de autenticação (Verifique se a senha é a nova !!)
+  const config = { auth: { username: 'admin@vanzoff.com', password: '!!@Marcelo2508@24' } };
 
   const fetchData = async () => {
     if (localStorage.getItem('isAuth') !== 'true') {
@@ -23,17 +24,21 @@ export const AdminPage = () => {
       return;
     }
 
+    setLoading(true); // Começa a carregar
     try {
       if (activeTab === 'leads') {
-        const res = await axios.get('http://localhost:8080/api/leads', config);
+        // MUDANÇA: Usando 'api' em vez de axios direto com localhost
+        const res = await api.get('/api/leads', config);
         setLeads(res.data);
       } else {
         const endpoint = activeTab === 'blog' ? '/api/posts' : '/api/projects';
-        const res = await axios.get(`http://localhost:8080${endpoint}`, config);
+        const res = await api.get(endpoint, config);
         setHistory(res.data);
       }
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
+    } finally {
+      setLoading(false); // Para de carregar
     }
   };
 
@@ -50,21 +55,20 @@ export const AdminPage = () => {
     };
 
     try {
-      await axios.post(`http://localhost:8080${endpoint}`, payload, config);
+      await api.post(endpoint, payload, config);
       alert("🚀 Publicado com sucesso!");
       resetForm();
       fetchData();
     } catch (error) {
-      alert("❌ Falha ao publicar. Verifique o Back-end.");
+      alert("❌ Falha ao publicar. Verifique a conexão com o Render.");
     }
   };
 
-  // FUNÇÃO PARA EXCLUIR POSTS/PROJETOS
   const handleDelete = async (id: number) => {
     if (window.confirm("⚠️ Deseja excluir permanentemente?")) {
       const endpoint = activeTab === 'blog' ? '/api/posts' : '/api/projects';
       try {
-        await axios.delete(`http://localhost:8080${endpoint}/${id}`, config);
+        await api.delete(`${endpoint}/${id}`, config);
         fetchData();
       } catch (error) {
         alert("Erro ao excluir.");
@@ -72,16 +76,14 @@ export const AdminPage = () => {
     }
   };
 
-  // NOVA FUNÇÃO: EXCLUIR CONTATOS (LEADS)
   const handleDeleteLead = async (id: number) => {
-    if (window.confirm("🗑️ Deseja remover este contato da sua caixa de entrada?")) {
+    if (window.confirm("🗑️ Deseja remover este contato?")) {
       try {
-        await axios.delete(`http://localhost:8080/api/leads/${id}`, config);
-        alert("✅ Contato excluído com sucesso!");
-        fetchData(); // Recarrega a lista
+        await api.delete(`/api/leads/${id}`, config);
+        alert("✅ Contato excluído!");
+        fetchData();
       } catch (error) {
-        console.error("Erro ao excluir lead:", error);
-        alert("❌ Falha ao excluir o contato.");
+        alert("❌ Falha ao excluir.");
       }
     }
   };
@@ -94,12 +96,7 @@ export const AdminPage = () => {
   const handleLogout = () => {
     localStorage.removeItem('isAuth');
     localStorage.removeItem('userName');
-    alert("Encerrando sessão de Abelardo e Ludmila...");
-    if (window.opener) {
-      window.close();
-    } else {
-      navigate('/');
-    }
+    navigate('/');
   };
 
   return (
@@ -121,22 +118,20 @@ export const AdminPage = () => {
         .history-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; }
         .lead-card { background: #111; padding: 25px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #F7CD04; text-align: left; width: 100%; position: relative; }
         .btn-delete-lead { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 20px; transition: 0.3s; }
-        .btn-delete-lead:hover { transform: scale(1.2); }
-        .btn-delete { background: #ff4d4d; color: #fff; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .btn-logout { margin-top: auto; color: #ff4d4d; background: none; border: none; padding: 15px; cursor: pointer; text-align: left; font-family: inherit; font-size: 16px; }
+        .loading-text { color: #F7CD04; margin-top: 20px; font-weight: bold; animate: pulse 1.5s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* --- RESPONSIVIDADE --- */
         @media (min-width: 769px) {
-    .Admin-Dashboard { flex-direction: row; }
-    .Admin-Sidebar { width: 280px; height: 100vh; position: fixed; flex-direction: column; border-right: 1px solid #333; border-bottom: none; justify-content: flex-start; }
-    .Admin-Main { margin-left: 280px; padding: 40px 60px; }
-    .nav-btn { display: block; width: 100%; margin-bottom: 10px; font-size: 16px; padding: 15px; }
-    .btn-logout { margin-top: auto; padding: 15px; font-size: 16px; }
-    .Logo-Admin img { width: 180px !important; margin-bottom: 50px; }
+            .Admin-Sidebar { width: 280px; height: 100vh; position: fixed; }
+            .Admin-Main { margin-left: 280px; padding: 40px 60px; }
+        }
       `}</style>
 
       <div className="Admin-Sidebar">
-        <div className="Logo-Admin"><img src="/images/Vanzoff agencia.png" alt="Vanzoff" style={{ width: '180px', marginBottom: '50px' }} /></div>
+        <div className="Logo-Admin">
+          <img src="/images/Vanzoff agencia.png" alt="Vanzoff" style={{ width: '180px', marginBottom: '50px' }} />
+        </div>
         <nav style={{ display: 'flex', flexDirection: 'column', height: '80%' }}>
           <button className={`nav-btn ${activeTab === 'blog' ? 'active' : ''}`} onClick={() => setActiveTab('blog')}>📝 Posts do Blog</button>
           <button className={`nav-btn ${activeTab === 'portfolio' ? 'active' : ''}`} onClick={() => setActiveTab('portfolio')}>💼 Cases do Portfólio</button>
@@ -149,56 +144,54 @@ export const AdminPage = () => {
         <header style={{ width: '100%', maxWidth: '800px', display: 'flex', justifyContent: 'space-between', marginBottom: '40px', borderBottom: '1px solid #333', paddingBottom: '20px' }}>
           <h2>Painel Administrativo</h2>
           <div className="Admin-User">
-            <span style={{ fontWeight: '500' }}>Olá, Abelardo e Ludmila</span>
+            <span>Olá, Abelardo e Ludmila</span>
             <div className="user-avatar">AL</div>
           </div>
         </header>
 
-        {activeTab !== 'leads' ? (
-          <>
-            <div className="Form-Container">
-              <h3>Nova Publicação: {activeTab === 'blog' ? 'Blog' : 'Portfólio'}</h3>
-              <form onSubmit={handlePublish}>
-                <div className="input-group"><label>Título</label><input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} /></div>
-                {activeTab === 'portfolio' && (<div className="input-group"><label>Cliente</label><input type="text" required value={client} onChange={(e) => setClient(e.target.value)} /></div>)}
-                <div className="input-group"><label>Categoria</label><select value={category} onChange={(e) => setCategory(e.target.value)}><option value="estratégia">Estratégia</option><option value="design">Design</option><option value="tecnologia">Tecnologia</option></select></div>
-                <div className="input-group"><label>URL Imagem</label><input type="text" required value={image} onChange={(e) => setImage(e.target.value)} /></div>
-                <div className="input-group"><label>Conteúdo</label><textarea rows={5} required value={summary} onChange={(e) => setSummary(e.target.value)} /></div>
-                <button type="submit" className="btn-save">🚀 Publicar Agora</button>
-              </form>
-            </div>
-            <div className="History-Container">
-              <h4 style={{ marginBottom: '20px', color: '#F7CD04' }}>📋 Histórico</h4>
-              {history.map((item) => (
-                <div className="history-item" key={item.id}>
-                  <div style={{ textAlign: 'left' }}><strong>{item.title}</strong><br /><small>{item.category}</small></div>
-                  <button className="btn-delete" onClick={() => handleDelete(item.id)}>Excluir</button>
-                </div>
-              ))}
-            </div>
-          </>
+        {loading ? (
+          <p className="loading-text">🔄 Carregando dados da Vanzoff...</p>
         ) : (
-          <div className="History-Container">
-            <h4 style={{ marginBottom: '20px', color: '#F7CD04' }}>📥 Mensagens Recebidas</h4>
-            {leads.length > 0 ? leads.map((lead) => (
-              <div className="lead-card" key={lead.id}>
-                {/* BOTÃO DE EXCLUIR LEAD */}
-                <button 
-                  className="btn-delete-lead" 
-                  title="Excluir contato"
-                  onClick={() => handleDeleteLead(lead.id)}
-                >
-                  🗑️
-                </button>
-
-                <p><strong>Nome:</strong> {lead.name}</p>
-                <p><strong>E-mail:</strong> {lead.email}</p>
-                <p><strong>WhatsApp:</strong> {lead.phone}</p>
-                <p style={{ marginTop: '10px', color: '#ccc', fontSize: '14px' }}><strong>Projeto:</strong> {lead.projectDescription}</p>
-                <small style={{ color: '#555' }}>Recebido em: {new Date(lead.createdAt).toLocaleString('pt-BR')}</small>
+          <>
+            {activeTab !== 'leads' ? (
+              <>
+                <div className="Form-Container">
+                  <h3>Nova Publicação: {activeTab === 'blog' ? 'Blog' : 'Portfólio'}</h3>
+                  <form onSubmit={handlePublish}>
+                    <div className="input-group"><label>Título</label><input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} /></div>
+                    {activeTab === 'portfolio' && (<div className="input-group"><label>Cliente</label><input type="text" required value={client} onChange={(e) => setClient(e.target.value)} /></div>)}
+                    <div className="input-group"><label>Categoria</label><select value={category} onChange={(e) => setCategory(e.target.value)}><option value="estratégia">Estratégia</option><option value="design">Design</option><option value="tecnologia">Tecnologia</option></select></div>
+                    <div className="input-group"><label>URL Imagem</label><input type="text" required value={image} onChange={(e) => setImage(e.target.value)} /></div>
+                    <div className="input-group"><label>Conteúdo</label><textarea rows={5} required value={summary} onChange={(e) => setSummary(e.target.value)} /></div>
+                    <button type="submit" className="btn-save">🚀 Publicar Agora</button>
+                  </form>
+                </div>
+                <div className="History-Container">
+                  <h4 style={{ marginBottom: '20px', color: '#F7CD04' }}>📋 Histórico</h4>
+                  {history.map((item) => (
+                    <div className="history-item" key={item.id}>
+                      <div style={{ textAlign: 'left' }}><strong>{item.title}</strong><br /><small>{item.category}</small></div>
+                      <button className="btn-delete" onClick={() => handleDelete(item.id)}>Excluir</button>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="History-Container">
+                <h4 style={{ marginBottom: '20px', color: '#F7CD04' }}>📥 Mensagens Recebidas</h4>
+                {leads.length > 0 ? leads.map((lead) => (
+                  <div className="lead-card" key={lead.id}>
+                    <button className="btn-delete-lead" onClick={() => handleDeleteLead(lead.id)}>🗑️</button>
+                    <p><strong>Nome:</strong> {lead.name}</p>
+                    <p><strong>E-mail:</strong> {lead.email}</p>
+                    <p><strong>WhatsApp:</strong> {lead.phone}</p>
+                    <p style={{ marginTop: '10px', color: '#ccc', fontSize: '14px' }}><strong>Projeto:</strong> {lead.projectDescription}</p>
+                    <small style={{ color: '#555' }}>Recebido em: {new Date(lead.createdAt).toLocaleString('pt-BR')}</small>
+                  </div>
+                )) : <p>Nenhuma mensagem nova por enquanto.</p>}
               </div>
-            )) : <p>Nenhum contato por enquanto.</p>}
-          </div>
+            )}
+          </>
         )}
       </div>
     </section>
