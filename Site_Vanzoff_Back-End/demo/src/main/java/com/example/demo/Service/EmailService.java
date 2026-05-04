@@ -14,7 +14,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
    
-    @Async // Anotação para tornar o método assíncrono, evitando bloqueios no LeadController
+    @Async // <--- Isso faz o e-mail rodar "por fora", sem travar o site
     public void enviarEmailContato(Lead lead) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
@@ -28,9 +28,10 @@ public class EmailService {
                             "Descrição do Projeto: " + lead.getProjectDescription());
             
             mailSender.send(message);
-            System.out.println("✅ E-mail enviado com sucesso!");
+            System.out.println("✅ E-mail enviado em segundo plano!");
         } catch (Exception e) {
-            System.err.println("❌ Erro ao enviar e-mail: " + e.getMessage());
+            // Se o Gmail der timeout aqui, o site não trava mais!
+            System.err.println("❌ Falha no e-mail em background: " + e.getMessage());
         }
     }
 }

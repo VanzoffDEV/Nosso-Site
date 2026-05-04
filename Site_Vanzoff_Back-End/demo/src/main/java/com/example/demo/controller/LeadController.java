@@ -22,19 +22,17 @@ public class LeadController {
 @PostMapping
 @Transactional
 public Lead salvarLead(@RequestBody Lead lead) {
-    // 1. Salva no banco primeiro e garante a persistência
-    Lead novoLead = repository.save(lead);
-    repository.flush(); // Força o Hibernate a gravar no Neon agora mesmo
+    // 1. Força a gravação imediata no banco Neon
+    Lead novoLead = repository.saveAndFlush(lead); 
 
-    // 2. Tenta enviar o e-mail de forma isolada
+    // 2. Chama o e-mail (que agora é @Async e não vai travar este método)
     try {
         emailService.enviarEmailContato(novoLead);
     } catch (Exception e) {
-        // Se o e-mail falhar, apenas logamos o erro. O lead já está salvo!
-        System.err.println("⚠️ Lead salvo no banco, mas e-mail falhou: " + e.getMessage());
+        System.err.println("⚠️ Erro ao disparar thread de e-mail: " + e.getMessage());
     }
 
-    // 3. Retorna o lead para o Front-end
+    // 3. Retorna o lead IMEDIATAMENTE para o Front-end
     return novoLead;
 }
 
