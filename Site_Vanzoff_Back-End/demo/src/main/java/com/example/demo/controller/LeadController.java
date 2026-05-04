@@ -6,6 +6,8 @@ import com.example.demo.Service.EmailService; // Importe o seu serviço aqui
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;  
+
 
 @RestController
 @RequestMapping("/api/leads")
@@ -18,6 +20,7 @@ public class LeadController {
     private EmailService emailService;
 
 @PostMapping
+@Transactional
 public Lead salvarLead(@RequestBody Lead lead) {
     // 1. Salva no banco primeiro e garante a persistência
     Lead novoLead = repository.save(lead);
