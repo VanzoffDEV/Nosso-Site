@@ -17,12 +17,23 @@ public class LeadController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping
-    public Lead salvarLead(@RequestBody Lead lead) {
-        Lead novoLead = repository.save(lead);
+@PostMapping
+public Lead salvarLead(@RequestBody Lead lead) {
+    // 1. Salva no banco primeiro e garante a persistência
+    Lead novoLead = repository.save(lead);
+    repository.flush(); // Força o Hibernate a gravar no Neon agora mesmo
+
+    // 2. Tenta enviar o e-mail de forma isolada
+    try {
         emailService.enviarEmailContato(novoLead);
-        return novoLead;
+    } catch (Exception e) {
+        // Se o e-mail falhar, apenas logamos o erro. O lead já está salvo!
+        System.err.println("⚠️ Lead salvo no banco, mas e-mail falhou: " + e.getMessage());
     }
+
+    // 3. Retorna o lead para o Front-end
+    return novoLead;
+}
 
     @GetMapping
     public List<Lead> listarLeads() {
