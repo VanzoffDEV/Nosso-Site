@@ -3,6 +3,7 @@ package com.example.demo.Service; // Verifique se sua pasta começa com 'S' mai�
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 // ESTA LINHA ABAIXO É O QUE RESOLVE O ERRO DO LEAD:
 import com.example.demo.model.Lead; 
@@ -12,7 +13,8 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
-
+   
+    @Async // Anotação para tornar o método assíncrono, evitando bloqueios no LeadController
     public void enviarEmailContato(Lead lead) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
