@@ -19,26 +19,28 @@ export const AdminPage = () => {
   const config = { auth: { username: 'admin@vanzoff.com', password: '!!@Marcelo2508@24' } };
 
   const fetchData = async () => {
-    if (localStorage.getItem('isAuth') !== 'true') {
+   if (localStorage.getItem('isAuth') !== 'true') {
       navigate('/login');
       return;
     }
 
-    setLoading(true); // Começa a carregar
+    setLoading(true);
     try {
+      // Adicionamos um timestamp para evitar que o navegador use o cache antigo
+      const res = await api.get(activeTab === 'leads' ? '/api/leads' : (activeTab === 'blog' ? '/api/posts' : '/api/projects'), {
+        ...config,
+        params: { _t: Date.now() } 
+      });
+      
       if (activeTab === 'leads') {
-        // MUDANÇA: Usando 'api' em vez de axios direto com localhost
-        const res = await api.get('/api/leads', config);
         setLeads(res.data);
       } else {
-        const endpoint = activeTab === 'blog' ? '/api/posts' : '/api/projects';
-        const res = await api.get(endpoint, config);
         setHistory(res.data);
       }
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     } finally {
-      setLoading(false); // Para de carregar
+      setLoading(false);
     }
   };
 
