@@ -18,16 +18,17 @@ export const AdminPage = () => {
   // Centralizamos a config de autenticação (Verifique se a senha é a nova !!)
   const config = { auth: { username: 'admin@vanzoff.com', password: '!!@Marcelo2508@24' } };
 
-  const fetchData = async () => {
-   if (localStorage.getItem('isAuth') !== 'true') {
+ const fetchData = async () => {
+    if (localStorage.getItem('isAuth') !== 'true') {
       navigate('/login');
       return;
     }
 
     setLoading(true);
     try {
-      // Adicionamos um timestamp para evitar que o navegador use o cache antigo
-      const res = await api.get(activeTab === 'leads' ? '/api/leads' : (activeTab === 'blog' ? '/api/posts' : '/api/projects'), {
+      // Usamos o timestamp (_t) para obrigar o navegador a buscar dados frescos do Render
+      const endpoint = activeTab === 'leads' ? '/api/leads' : (activeTab === 'blog' ? '/api/posts' : '/api/projects');
+      const res = await api.get(endpoint, {
         ...config,
         params: { _t: Date.now() } 
       });
