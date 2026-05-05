@@ -16,7 +16,7 @@ export const AdminPage = () => {
   const [client, setClient] = useState('');
 
   // Centralizamos a config de autenticação (Verifique se a senha é a nova !!)
-  const config = { auth: { username: 'admin@vanzoff.com', password: '!@#Marcelo250824' } };
+  const config = { auth: { username: 'admin@vanzoff.com.br', password: '!@#Marcelo250824' } };
 
  const fetchData = async () => {
     if (localStorage.getItem('isAuth') !== 'true') {
