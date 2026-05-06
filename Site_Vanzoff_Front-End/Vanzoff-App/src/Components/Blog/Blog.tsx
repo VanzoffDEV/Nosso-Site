@@ -19,7 +19,7 @@ export const Blog = () => {
   useEffect(() => {
     const carregarPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/posts');
+        const response = await axios.get('https://api.agenciavanzoff.com.br/api/posts');
         setPosts(response.data);
       } catch (error) {
         console.error("Erro ao carregar posts:", error);

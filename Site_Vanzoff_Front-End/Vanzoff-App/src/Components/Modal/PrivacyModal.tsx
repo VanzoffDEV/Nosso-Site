@@ -13,6 +13,11 @@ export const PrivacyModal = ({ isOpen, onClose }: PrivacyProps) => {
 
   if (!isOpen) return null;
 
+  const handleAccept = () => {
+    localStorage.setItem('vanzoff_privacy_accepted', 'true');
+    onClose(); // Fecha o modal após salvar no localStorage
+  };
+
   return (
     <div className="Modal-Overlay"> {/* Removido onClose do Overlay para forçar o aceite */}
       <div className="Modal-Content" onClick={(e) => e.stopPropagation()}>
@@ -50,7 +55,7 @@ export const PrivacyModal = ({ isOpen, onClose }: PrivacyProps) => {
         {/* O botão fica 'disabled' se hasAgreed for false */}
         <button 
           className="btn-send" 
-          onClick={onClose}
+          onClick={handleAccept}
           disabled={!hasAgreed} 
           style={{ 
             marginTop: '10px', 

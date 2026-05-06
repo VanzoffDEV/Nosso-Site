@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import{ useEffect } from 'react';
 
 // Importe suas Páginas e Componentes
 import { Navbar } from './Components/Navbar/Navbar';
@@ -30,9 +31,26 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+
+
+
+
 function App() {
   // Estado para controlar os modais (começa como null para não abrir nada sozinho)
   const [activeModal, setActiveModal] = useState<null | 'work' | 'privacy'>(null);
+ 
+  // --- ADICIONE ESTE BLOCO AQUI ---
+  useEffect(() => {
+    // Verifica se o usuário já aceitou a LGPD anteriormente
+    const hasAcceptedPrivacy = localStorage.getItem('vanzoff_privacy_accepted');
+
+    // Se não aceitou, abre o modal de privacidade automaticamente
+    if (!hasAcceptedPrivacy) {
+      setActiveModal('privacy');
+    }
+  }, []); // Executa apenas uma vez ao montar o componente
+  // --------------------------------
+
 
   // Componente que agrupa as seções da Página Principal (Landing Page)
   const HomePage = () => (
