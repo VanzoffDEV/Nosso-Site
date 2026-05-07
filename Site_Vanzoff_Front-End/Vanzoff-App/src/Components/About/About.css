@@ -24,7 +24,7 @@
 
   /* Sua imagem e o gradiente aqui */
   background-image: linear-gradient(rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.6)), url("images/Logo2.jpeg");
+      rgba(0, 0, 0, 0.6)), url("/Site_Vanzoff_Front-End/Vanzoff-App/public/images/Logo2.jpeg");
 
   background-size: cover;
   background-position: center;

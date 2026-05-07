@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api'; // IMPORTANTE: Usando sua config centralizada
+import api from '../api'; // Usando sua config centralizada com a URL do Render
 
 export const AdminPage = () => {
   const [activeTab, setActiveTab] = useState<'blog' | 'portfolio' | 'leads'>('blog');
   const [history, setHistory] = useState<any[]>([]);
   const [leads, setLeads] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false); // Novo estado de carregamento
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Estados dos Campos do Formulário
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('estratégia');
-  const [image, setImage] = useState('');
   const [summary, setSummary] = useState('');
   const [client, setClient] = useState('');
+  
+  // NOVO ESTADO: Agora guardamos o arquivo em vez da URL de texto
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // Centralizamos a config de autenticação (Verifique se a senha é a nova !!)
+  // Centralizamos a config de autenticação
   const config = { auth: { username: 'admin@vanzoff.com.br', password: '!@#Marcelo250824' } };
 
- const fetchData = async () => {
+  const fetchData = async () => {
     if (localStorage.getItem('isAuth') !== 'true') {
       navigate('/login');
       return;
@@ -26,7 +29,6 @@ export const AdminPage = () => {
 
     setLoading(true);
     try {
-      // Usamos o timestamp (_t) para obrigar o navegador a buscar dados frescos do Render
       const endpoint = activeTab === 'leads' ? '/api/leads' : (activeTab === 'blog' ? '/api/posts' : '/api/projects');
       const res = await api.get(endpoint, {
         ...config,
@@ -52,18 +54,37 @@ export const AdminPage = () => {
   const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
     const endpoint = activeTab === 'blog' ? '/api/posts' : '/api/projects';
-    const payload = {
-      title, category, imageUrl: image, summary,
-      client: activeTab === 'portfolio' ? client : "" 
-    };
+
+    // REFORMULADO: Usando FormData para enviar o arquivo binário
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('summary', summary);
+    
+    if (activeTab === 'portfolio') {
+      formData.append('client', client);
+    }
+
+    if (imageFile) {
+      formData.append('image', imageFile); // 'image' deve bater com o @RequestParam do Java
+    } else {
+      alert("⚠️ Por favor, selecione uma imagem.");
+      return;
+    }
 
     try {
-      await api.post(endpoint, payload, config);
+      // IMPORTANTE: Headers multipart/form-data é necessário para arquivos
+      await api.post(endpoint, formData, {
+        ...config,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      
       alert("🚀 Publicado com sucesso!");
       resetForm();
       fetchData();
     } catch (error) {
-      alert("❌ Falha ao publicar. Verifique a conexão com o Render.");
+      console.error("Erro no upload:", error);
+      alert("❌ Falha ao publicar. Verifique a conexão ou o tamanho da imagem.");
     }
   };
 
@@ -92,8 +113,14 @@ export const AdminPage = () => {
   };
 
   const resetForm = () => {
-    setTitle(''); setImage(''); setSummary(''); setClient('');
+    setTitle(''); 
+    setImageFile(null); 
+    setSummary(''); 
+    setClient('');
     setCategory('estratégia');
+    // Limpa o campo de arquivo visualmente
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
   };
 
   const handleLogout = () => {
@@ -121,14 +148,21 @@ export const AdminPage = () => {
         .history-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; }
         .lead-card { background: #111; padding: 25px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #F7CD04; text-align: left; width: 100%; position: relative; }
         .btn-delete-lead { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 20px; transition: 0.3s; }
-        .loading-text { color: #F7CD04; margin-top: 20px; font-weight: bold; animate: pulse 1.5s infinite; }
+        .loading-text { color: #F7CD04; margin-top: 20px; font-weight: bold; }
+        .btn-logout { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: auto; }
         
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        @media (min-width: 769px) {
-            .Admin-Sidebar { width: 280px; height: 100vh; position: fixed; }
-            .Admin-Main { margin-left: 280px; padding: 40px 60px; }
+        /* Estilo para o input de arquivo */
+        input[type="file"]::file-selector-button {
+          background-color: #444;
+          color: white;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-right: 15px;
+          transition: 0.3s;
         }
+        input[type="file"]::file-selector-button:hover { background-color: #555; }
       `}</style>
 
       <div className="Admin-Sidebar">
@@ -162,19 +196,47 @@ export const AdminPage = () => {
                   <h3>Nova Publicação: {activeTab === 'blog' ? 'Blog' : 'Portfólio'}</h3>
                   <form onSubmit={handlePublish}>
                     <div className="input-group"><label>Título</label><input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} /></div>
-                    {activeTab === 'portfolio' && (<div className="input-group"><label>Cliente</label><input type="text" required value={client} onChange={(e) => setClient(e.target.value)} /></div>)}
-                    <div className="input-group"><label>Categoria</label><select value={category} onChange={(e) => setCategory(e.target.value)}><option value="estratégia">Estratégia</option><option value="design">Design</option><option value="tecnologia">Tecnologia</option></select></div>
-                    <div className="input-group"><label>URL Imagem</label><input type="text" required value={image} onChange={(e) => setImage(e.target.value)} /></div>
+                    
+                    {activeTab === 'portfolio' && (
+                      <div className="input-group"><label>Cliente</label><input type="text" required value={client} onChange={(e) => setClient(e.target.value)} /></div>
+                    )}
+                    
+                    <div className="input-group">
+                      <label>Categoria</label>
+                      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="estratégia">Estratégia</option>
+                        <option value="design">Design</option>
+                        <option value="tecnologia">Tecnologia</option>
+                      </select>
+                    </div>
+
+                    {/* MUDANÇA: Campo de Upload de Imagem */}
+                    <div className="input-group">
+                      <label>Imagem de Capa</label>
+                      <input 
+                        id="fileInput"
+                        type="file" 
+                        accept="image/*" 
+                        required 
+                        onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)} 
+                      />
+                    </div>
+
                     <div className="input-group"><label>Conteúdo</label><textarea rows={5} required value={summary} onChange={(e) => setSummary(e.target.value)} /></div>
+                    
                     <button type="submit" className="btn-save">🚀 Publicar Agora</button>
                   </form>
                 </div>
+
                 <div className="History-Container">
                   <h4 style={{ marginBottom: '20px', color: '#F7CD04' }}>📋 Histórico</h4>
                   {history.map((item) => (
                     <div className="history-item" key={item.id}>
-                      <div style={{ textAlign: 'left' }}><strong>{item.title}</strong><br /><small>{item.category}</small></div>
-                      <button className="btn-delete" onClick={() => handleDelete(item.id)}>Excluir</button>
+                      <div style={{ textAlign: 'left' }}>
+                        <strong>{item.title}</strong><br />
+                        <small>{item.category}</small>
+                      </div>
+                      <button className="btn-delete" onClick={() => handleDelete(item.id)} style={{ background: '#ff4d4d', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
                     </div>
                   ))}
                 </div>
