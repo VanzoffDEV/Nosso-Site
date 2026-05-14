@@ -5,13 +5,14 @@ import api from "../api";
 export const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // NOVO: Estado de carregamento
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Ativa o loading
 
     try {
-      // Fazemos a chamada para o seu backend no Render
       const response = await api.get("/api/posts", {
         auth: {
           username: email,
@@ -21,8 +22,6 @@ export const LoginAdmin = () => {
 
       if (response.status === 200) {
         alert("✅ Acesso autorizado! Bem-vindo Abelardo e Ludmila.");
-
-        // 1. Salvamos a autenticação ANTES de mudar de página
         localStorage.setItem("isAuth", "true");
         
         const nomeUsuario = email.split("@")[0];
@@ -31,12 +30,13 @@ export const LoginAdmin = () => {
           nomeUsuario.charAt(0).toUpperCase() + nomeUsuario.slice(1)
         );
 
-        // 2. Redirecionamos na MESMA aba para evitar bloqueio de pop-up
         navigate("/admin");
       }
     } catch (error) {
       console.error("Erro de login:", error);
-      alert("❌ E-mail ou senha incorretos! Verifique as variáveis no Render.");
+      alert("❌ E-mail ou senha incorretos!");
+    } finally {
+      setLoading(false); // Desativa o loading independente do resultado
     }
   };
 
@@ -50,7 +50,8 @@ export const LoginAdmin = () => {
         .input-group label { display: block; color: #ccc; margin-bottom: 8px; }
         .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; outline: none; }
         .btn-login { width: 100%; padding: 15px; background: #F7CD04; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-login:hover { background: #ffdb33; transform: scale(1.02); }
+        .btn-login:hover:not(:disabled) { background: #ffdb33; transform: scale(1.02); }
+        .btn-login:disabled { background: #555; cursor: not-allowed; opacity: 0.7; }
         .btn-back-home { display: inline-block; margin-top: 25px; color: #888; text-decoration: none; font-size: 14px; transition: 0.3s; }
         .btn-back-home:hover { color: #F7CD04; }
       `}</style>
@@ -67,7 +68,9 @@ export const LoginAdmin = () => {
             <label>Senha</label>
             <input type="password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <button type="submit" className="btn-login">Entrar no Painel</button>
+          <button type="submit" className="btn-login" disabled={loading}>
+            {loading ? "Verificando..." : "Entrar no Painel"}
+          </button>
         </form>
         <Link to="/" className="btn-back-home">← Voltar para a Home</Link>
       </div>

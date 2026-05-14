@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
- //import axios from 'axios';
 import './Contato.css';
-import '../../api'; // Certifique-se de que o caminho para o api.ts está correto
 import api from '../../api';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '', // Adicionei para bater com o Java
+    phone: '',
     service: '',
     message: ''
   });
 
+  const [isSending, setIsSending] = useState(false); // NOVO: Estado de envio
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSending(true); // Inicia o carregamento
     
-    // Mapeamos para os nomes que o seu Lead.java espera
     const payload = {
       name: formData.name,
       email: formData.email,
@@ -25,13 +25,14 @@ export const Contact = () => {
     };
 
     try {
-      // Rota pública definida no seu SecurityConfig
       await api.post('/api/leads', payload);
       alert(`🚀 Obrigado, ${formData.name}! Recebemos seu projeto e responderemos em breve.`);
       setFormData({ name: '', email: '', phone: '', service: '', message: '' });
     } catch (error) {
       console.error("Erro ao enviar lead:", error);
       alert("❌ Ops! Ocorreu um erro ao enviar. Tente novamente ou use o WhatsApp.");
+    } finally {
+      setIsSending(false); // Finaliza o carregamento
     }
   };
 
@@ -86,7 +87,14 @@ export const Contact = () => {
             <div className="input-group">
               <textarea name="message" placeholder="Conte um pouco sobre o seu projeto..." required value={formData.message} onChange={handleChange}></textarea>
             </div>
-            <button type="submit" className="btn-send">Enviar Mensagem</button>
+            <button 
+              type="submit" 
+              className="btn-send" 
+              disabled={isSending}
+              style={isSending ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
+            >
+              {isSending ? "Enviando..." : "Enviar Mensagem"}
+            </button>
           </form>
         </div>
       </div>
