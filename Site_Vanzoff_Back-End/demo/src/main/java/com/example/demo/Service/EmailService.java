@@ -33,7 +33,7 @@ public class EmailService {
 
             // 2. Criar o Corpo do E-mail (JSON)
             Map<String, Object> body = new HashMap<>();
-            body.put("from", "Vanzoff Site <onboarding@resend.dev>"); // No início use o onboarding deles
+            body.put("from", "Vanzoff Site <contato@agenciavanzoff.com.br>"); // No início use o onboarding deles
             body.put("to", "vanzoffhub@gmail.com");
             body.put("subject", "🚀 Novo Lead: " + lead.getName());
             
