@@ -134,3 +134,83 @@ https://agenciavanzoff.com.br
  ┃ ┗ 📂 config
  ┃
  ┗ 📄 README.md
+```
+
+# ⚙️ Como Executar o Projeto
+
+ # 🔧 Back-end (Spring Boot)
+   **Pré-requisitos** 
+- Java JDK 17
+- Maven
+
+**Instalação**
+```bash
+
+# Clone o repositório
+git clone https://github.com/VanzoffDEV/Nosso-Site.git
+
+# Entre na pasta do servidor
+cd server
+
+# Instale as dependências
+mvn clean install
+
+# Execute a aplicação
+mvn spring-boot:run
+```
+**Variáveis de Ambiente**
+ ```bash
+DB_URL=
+DB_USERNAME=
+DB_PASSWORD=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+# 🎨 Front-end (React + Vite)
+**Pré-requisitos**
+- Node.js
+
+  **Instalação**
+ ```bash
+  # Entre na pasta do cliente
+    cd client
+
+ # Instale as dependências
+   npm install
+
+ # Rode o projeto
+   npm run dev
+  ```
+
+# 📸 Preview do Projeto
+<div align="center"><img width="1920" height="864" alt="Captura de Tela (828)" src="https://github.com/user-attachments/assets/3f5980fc-abb2-46e4-ac25-5f90db5a32af" />
+ </div>
+
+
+# 🎯 Objetivos do Projeto
+- Criar presença digital profissional
+- Melhorar conversão de clientes
+- Automatizar gerenciamento de conteúdo
+- Fortalecer identidade visual
+- Aplicar boas práticas de desenvolvimento Full Stack
+
+ # 📫 Contato
+<div align="center"> <a href="https://agenciavanzoff.com.br"> <img src="https://img.shields.io/badge/Site-000000?style=for-the-badge&logo=googlechrome&logoColor=white"/> </a> <a href="https://instagram.com/agenciavanzoff"> <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white"/> </a> <a href="https://wa.me/5581920044471"> <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/> </a> <a href="mailto:contato@agenciavanzoff.com.br"> <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"/> </a> </div>
+
+# 👨‍💻 Autor
+**Abelardo Vanzoff**
+
+🎓 Estudante de Análise e Desenvolvimento de Sistemas (ADS)
+
+💻 Desenvolvedor Full Stack
+
+🚀 Fundador da Agência Vanzoff
+
+Este projeto representa a união entre tecnologia, design e marketing digital para criação de soluções modernas e escaláveis.
+
+<div align="center">
+⚡ "Transformando ideias em experiências digitais."
+</div> <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:facc15,100:1e1b1b&height=120&section=footer"/>
+
