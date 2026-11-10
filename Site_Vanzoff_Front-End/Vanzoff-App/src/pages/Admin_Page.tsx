@@ -19,7 +19,7 @@ export const AdminPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   // Centralizamos a config de autenticação
-  const config = { auth: { username: 'admin@vanzoff.com.br', password: '!@#Marcelo250824' } };
+  const config = { auth: { username: 'admin@vanzoff.com.br', password: import.meta.env.VITE_ADMIN_PASSWORD } };
 
   const fetchData = async () => {
     if (localStorage.getItem('isAuth') !== 'true') {

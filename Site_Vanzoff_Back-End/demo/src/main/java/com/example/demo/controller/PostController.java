@@ -5,6 +5,7 @@ import com.example.demo.repository.PostRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,15 +17,27 @@ import java.util.Map;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController {
 
-    @Autowired
+  @Autowired
     private PostRepository repository;
 
-    // Configuração do Cloudinary (Pegue as chaves no site deles, é grátis)
-   Cloudinary cloudinary = new Cloudinary(Map.of(
-    "cloud_name", "dqkstxbao",
-    "api_key", "412218277261775",
-    "api_secret", "8b9aFBNZtKUA7NbrkIIYubrHiL0" // Clique no ícone do olho no print para ver e copiar
-));
+    // Puxa direto do application.properties de forma segura
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value("${cloudinary.api-secret}")
+    private String apiSecret;
+
+    private Cloudinary getCloudinary() {
+        return new Cloudinary(Map.of(
+            "cloud_name", cloudName,
+            "api_key", apiKey,
+            "api_secret", apiSecret
+        ));
+    }
+
     @GetMapping
     public List<Post> getAllPosts() {
         return repository.findAll();
@@ -38,7 +51,7 @@ public class PostController {
             @RequestParam("image") MultipartFile image) throws Exception {
         
         // 1. Faz o upload da imagem para o Cloudinary
-       Map<?, ?> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+     Map<?, ?> uploadResult = getCloudinary().uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
         String imageUrl = uploadResult.get("url").toString();
 
         // 2. Cria o objeto Post com a URL retornada
